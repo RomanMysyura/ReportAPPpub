@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+
 export const CrearPartit = () => {
     const [nomPartida, setNomPartida] = useState('');
     const [categoria, setCategoria] = useState('Lliga Elit');

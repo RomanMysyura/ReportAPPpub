@@ -413,7 +413,6 @@ const styles = StyleSheet.create({
   },
   textSubTitleDescription: {
     fontSize: 21,
-
   },
   inputSubTitle: {
     width: 300,
@@ -434,8 +433,6 @@ const styles = StyleSheet.create({
   subtituloContainer: {
     width: 350,
     margin: 0,
-   
-
   },
   subtituloText: {
     fontSize: 28,

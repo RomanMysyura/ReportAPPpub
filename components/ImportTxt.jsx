@@ -64,7 +64,7 @@ export const ImportTxt = ({ actualizarConfig, closeModal }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
-        <Text style={styles.buttonText}>Importar arxiu txt</Text>
+        <Text style={styles.buttonText}>Importar desde un arxiu.txt</Text>
       </TouchableOpacity>
     </View>
   );
@@ -79,18 +79,18 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#0077b6',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    padding: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 3,
+    width: 250,
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
   },
   fileContentContainer: {
