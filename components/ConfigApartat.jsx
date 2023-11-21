@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Modal, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Modal, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
-
-
 
 export const ConfigApartat = ({ route }) => {
   const nav = useNavigation();
-
-  {/* Si hem clicat el boto de guardar, tornara a la pantalla de Apartats 121111*/ }
-  const Guardar = () => {
-    nav.replace('Apartats');
-  };
   const { selectedTitle } = route.params;
+  const [textInputHeight, setTextInputHeight] = useState(40);
   const [subtituloNombre, setSubtituloNombre] = useState('');
-
-  {/* Estructura del json config */ }
+  const [subtituloDescripcion, setSubtituloDescripcion] = useState('');
   const [config, setConfig] = useState([
     {
       titulo: 'Fisic',
@@ -34,16 +26,10 @@ export const ConfigApartat = ({ route }) => {
       ],
     },
   ]);
-
-
-  {/* Lògica per defecte per els modals */ }
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedSubtitleIndex, setSelectedSubtitleIndex] = useState(null);
 
-
-
-  {/* Lògica per obtenir els valors del config */ }
   useEffect(() => {
     const cargarConfig = async () => {
       try {
@@ -59,12 +45,9 @@ export const ConfigApartat = ({ route }) => {
     cargarConfig();
   }, []);
 
-
-
-  {/* Lògica per crear nou sub-apartat */ }
   const agregarNuevoSubtitulo = () => {
     if (config) {
-      const nuevaSubtitulo = { nombre: subtituloNombre, descripcion: '' };
+      const nuevaSubtitulo = { nombre: subtituloNombre, descripcion: subtituloDescripcion };
 
       const nuevoConfig = config.map((item) => {
         if (item.titulo === selectedTitle) {
@@ -83,12 +66,10 @@ export const ConfigApartat = ({ route }) => {
       });
 
       setSubtituloNombre('');
+      setSubtituloDescripcion('');
     }
   };
 
-
-
-  {/* Lògica per eliminar el subapartat del config*/ }
   const eliminarSubtitulo = (index) => {
     Alert.alert(
       'Eliminar sub-apartat',
@@ -118,19 +99,21 @@ export const ConfigApartat = ({ route }) => {
                   console.error('Error al eliminar el subtítulo:', error);
                 }
               });
-              setSelectedSubtitleIndex(null); // Limpiar el índice seleccionado
+              setSelectedSubtitleIndex(null);
             }
           },
         },
       ]
     );
   };
-
+  const Guardar = () => {
+    nav.replace('Apartats');
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.selectedTitle}>{selectedTitle}</Text>
-      <ScrollView >
-        
+      <ScrollView>
+
         {config.map((item, indiceTitulo) => (
           <View key={indiceTitulo} style={styles.subtituloContainer}>
             {item.titulo === selectedTitle &&
@@ -141,44 +124,40 @@ export const ConfigApartat = ({ route }) => {
                     setIsEditModalVisible(true);
                   }}
                 >
-
-
-
                   <Text style={styles.subtituloText}>{subtitulo.nombre}</Text>
-
-
-
-                  {/* Boto per eliminar el subapartat */}
                   <TouchableOpacity
                     style={styles.eliminarBtn}
                     onPress={() => eliminarSubtitulo(index)}
                   >
                     <Text style={styles.eliminarBtnText}>
-                      <Icon name="trash" size={28} color="red" />
+                      <Icon name="trash" size={21} color="red" />
                     </Text>
                   </TouchableOpacity>
-
-
-                  {/* Descripcio del subapartat */}
                   <Text style={styles.textSubTitleDescription}>{subtitulo.descripcion}</Text>
                 </TouchableOpacity>
               ))}
-
           </View>
         ))}
 
-
-
-        {/* Modal per crear nou subapartat */}
         <Modal visible={isModalVisible} animationType="slide">
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Crear sub-apartat</Text>
             <TextInput
               placeholder="Nom del sub-apartat"
               placeholderTextColor="gray"
               value={subtituloNombre}
               onChangeText={(text) => setSubtituloNombre(text)}
               style={styles.inputNewSubtitulo}
+            />
+            <TextInput
+              placeholder="Descripcio"
+              value={subtituloDescripcion}
+              onChangeText={(text) => setSubtituloDescripcion(text)}
+              style={[styles.inputSubTitle, { height: Math.max(40, textInputHeight) }]}
+              onContentSizeChange={(event) => {
+                setTextInputHeight(event.nativeEvent.contentSize.height);
+              }}
+              multiline={true}
+              numberOfLines={1}
             />
             <TouchableOpacity style={styles.btnCrear} onPress={agregarNuevoSubtitulo}>
               <Text style={styles.btnCrearText}>Crear</Text>
@@ -189,8 +168,6 @@ export const ConfigApartat = ({ route }) => {
           </View>
         </Modal>
 
-
-        {/* Modal per editar un subapartat existent*/}
         <Modal visible={isEditModalVisible} animationType="slide">
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Editar sub-apartat</Text>
@@ -233,22 +210,23 @@ export const ConfigApartat = ({ route }) => {
                   setConfig(nuevoConfig);
                 }
               }}
-              style={styles.inputSubTitle}
+              style={[styles.inputSubTitle, { height: Math.max(40, textInputHeight) }]}
+              onContentSizeChange={(event) => {
+                setTextInputHeight(event.nativeEvent.contentSize.height);
+              }}
               multiline={true}
-              numberOfLines={4}
+              numberOfLines={1}
             />
             <TouchableOpacity
               style={styles.btnCrear}
               onPress={() => {
                 if (selectedSubtitleIndex !== null) {
-                  // Guardar cambios para el subtítulo editado
                   AsyncStorage.setItem('config', JSON.stringify(config), (error) => {
                     if (error) {
                       console.error('Error al guardar los cambios del subtítulo:', error);
                     }
                   });
                 } else {
-                  // Crear nuevo subtítulo
                   agregarNuevoSubtitulo();
                 }
 
@@ -272,40 +250,17 @@ export const ConfigApartat = ({ route }) => {
 
       </ScrollView>
 
-      {/* Botons per obrir el modal de crear nou subaparta i de guardar */}
       <View style={{ position: 'absolute', bottom: 60, right: 0, }}>
-
         <TouchableOpacity style={[styles.btnopenmodal]} onPress={() => setIsModalVisible(true)}>
           <Text style={styles.btnText}>+</Text>
         </TouchableOpacity>
-
-
         <TouchableOpacity style={[styles.btnsave]} onPress={Guardar}>
           <Icon name="save" size={28} color="#0077b6" />
         </TouchableOpacity>
       </View>
     </View>
   );
-
-
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -315,39 +270,54 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     alignItems: 'center',
-    
+paddingBottom: 40,
   },
 
   btnCrear: {
-    margin: 20,
-    width: 200,
-    textAlign: 'center',
     backgroundColor: 'green',
-    borderRadius: 3,
+    width: 220,
     padding: 5,
+    borderRadius: 3,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    marginTop: 30,
+    marginBottom: 10,
   },
   btnCrearText: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
     color: 'white',
   },
   btnCancel: {
-    width: 200,
-    textAlign: 'center',
     backgroundColor: '#ae2012',
-    borderRadius: 3,
+    width: 220,
     padding: 5,
+    borderRadius: 3,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    margin: 0,
   },
   btnCancelText: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
     color: 'white',
   },
-
-
-
-
-
+  modalDescription:{
+    width: 300,
+    color: 'black',
+    fontSize: 23,
+    marginTop: 4,
+    backgroundColor: '#ced4da',
+    padding: 10,
+    borderBottomWidth: 1,
+    
+  },
 
   btn: {
     width: 300,
@@ -396,14 +366,14 @@ const styles = StyleSheet.create({
   },
 
   eliminarBtn: {
-    width: 80,
-    height: 30,
+
+
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: -10,
-    top: -4,
+    right: 30,
+    top: -5,
   },
   eliminarBtnText: {
     color: 'red',
@@ -412,30 +382,33 @@ const styles = StyleSheet.create({
     marginRight: -30,
   },
   textSubTitleDescription: {
-    fontSize: 21,
+    fontSize: 18,
+    color: 'grey',
   },
   inputSubTitle: {
     width: 300,
     color: 'black',
-    fontSize: 25,
-    height: 'auto',
-    marginTop: 20,
+    fontSize: 23,
+    marginTop: 4,
     backgroundColor: '#ced4da',
     padding: 10,
-    borderWidth: 0.6,
-    borderRadius: 5,
+    borderBottomWidth: 1,
   },
   inputNewSubtitulo: {
-    fontSize: 40,
+    fontSize: 25,
     borderBottomWidth: 1,
     borderBottomColor: 'black',
+    width: 300,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   subtituloContainer: {
     width: 350,
     margin: 0,
   },
   subtituloText: {
-    fontSize: 28,
+    fontSize: 18,
+    width: 320,
   },
   subtituloItem: {
     backgroundColor: 'white',
@@ -455,9 +428,9 @@ const styles = StyleSheet.create({
   },
 
   selectedTitle: {
-    fontSize: 45,
+    fontSize: 25,
     backgroundColor: '#0077b6',
-    
+
     width: '100%',
     textAlign: 'center',
     color: 'white',
@@ -469,9 +442,9 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     textAlign: 'center',
-    fontSize: 40,
-    marginBottom: 80,
-    marginTop: -200,
+    fontSize: 30,
+    marginBottom: 20,
+
     color: '#0077b6',
   },
 

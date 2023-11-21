@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
+import { Feather } from '@expo/vector-icons';
 
-export const ImportTxt = ({ actualizarConfig, closeModal }) => {
+export const ImportTxt = ({ actualizarConfig, closeModal, closeNewModal }) => {
   const [fileContent, setFileContent] = useState(null);
 
   const handleButtonClick = async () => {
@@ -21,14 +22,17 @@ export const ImportTxt = ({ actualizarConfig, closeModal }) => {
         if (content) {
           setFileContent(content);
 
-          // Procesar el contenido y actualizar la configuración
+       
           const nuevaConfig = [];
           const lineas = content.split('\n');
 
           lineas.forEach((linea) => {
-            const partes = linea.trim().split(/\s+/);
-            if (partes.length === 2) {
-              const [numero, nombre] = partes;
+            
+            const partes = linea.trim().split('#');
+
+          
+            if (partes.length >= 2) {
+              const [numero, nombre] = partes.slice(0, 2);
               const [indiceTitulo, indiceSubtitulo] = numero.split('.');
 
               if (!nuevaConfig[indiceTitulo - 1]) {
@@ -58,39 +62,39 @@ export const ImportTxt = ({ actualizarConfig, closeModal }) => {
     } finally {
       // Cerrar el modal independientemente de si hay un error o no
       closeModal();
+      closeNewModal();
     }
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
-        <Text style={styles.buttonText}>Importar desde un arxiu.txt</Text>
+        <Text style={styles.buttonText}><Feather name="file-plus" size={24} color="black" /></Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    
   },
   button: {
-    backgroundColor: '#0077b6',
-    padding: 10,
-    borderRadius: 5,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    width: 250,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    padding: 11,
+    fontSize: 17,
+    borderWidth: 1,
+    width: 120,
+    textAlign: 'center',
+    margin: 7,
+    elevation: 5,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 20,
+    color: 'black',
+    fontSize: 18,
     textAlign: 'center',
   },
   fileContentContainer: {

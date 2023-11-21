@@ -59,7 +59,7 @@ const Login = ({ onLogin }) => {
 const styles = StyleSheet.create({
   input: {
     fontSize: 25,
-    height: 40,
+    height: 50,
     width: 300,
     borderColor: 'transparent',
     borderBottomWidth: 2,
@@ -73,16 +73,16 @@ const styles = StyleSheet.create({
   },
   texttitol: {
     textAlign: 'center',
-    fontSize: 70,
-    marginBottom: 80,
-    marginTop: -300,
+    fontSize: 50,
+    marginBottom: 30,
+    marginTop: 50,
     color: '#0077b6',
   },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+  
   },
   text: {
     fontSize: 30,

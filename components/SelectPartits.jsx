@@ -88,30 +88,29 @@ export const SelectPartits = () => {
         onChangeText={(text) => setSearchText(text)}
       />
       {searchPartidos().map((partido, index) => (
-        <View key={index} style={styles.partidoContainer}>
-          <TouchableOpacity
-            style={styles.btnPartit}
-            onPress={() => NotesPartit(partido.nomPartida)}
-          >
-            <Text style={styles.nomParit}>{partido.nomPartida}{'\n'}</Text>
-            <Text style={styles.textCategoria}>{partido.categoria}{'\n'}</Text>
-            <Text style={styles.btnText}>
-              Data: {new Date(partido.date).toDateString()}
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity key={index} style={styles.partidoContainer}
+          onPress={() => NotesPartit(partido.nomPartida)}
+        >
+
+          <Text style={styles.nomParit}>{partido.nomPartida}{'\n'}</Text>
+          <Text style={styles.textCategoria}>{partido.categoria}{'\n'}</Text>
+          <Text style={styles.btnText}>
+            Data: {new Date(partido.date).toDateString()}
+          </Text>
+
 
           <TouchableOpacity
             style={styles.eliminarBtn}
             onPress={() => eliminarPartido(index)}
           >
             <Text style={styles.eliminarBtnText}>
-              <Icon name="trash" size={28} color="red" />
+              <Icon name="trash" size={25} color="red" />
             </Text>
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       ))}
       {searchPartidos().length === 0 && partits.length === 0 && (
-        <Text style={styles.emptyText}>No tienes partidos creados</Text>
+        <Text style={styles.emptyText}>No tens partits creats</Text>
       )}
     </ScrollView>
   );
@@ -124,8 +123,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   partidoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     backgroundColor: 'white',
     borderColor: 'black',
     margin: 5,
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 3,
     elevation: 3, // Esta propiedad es específica para Android
-  
+    width: 330,
   },
   btnPartit: {
     width: 320,
@@ -145,13 +142,10 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   eliminarBtn: {
-    width: 50,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+
     position: 'absolute',
-    right: -10,
-    top: 56,
+    right: 5,
+    top: 42,
   },
   btnText: {
     textAlign: 'center',
@@ -161,15 +155,17 @@ const styles = StyleSheet.create({
   nomParit: {
     textAlign: 'center',
     color: 'black',
-    fontSize: 33,
+    
+    fontSize: 24,
     marginTop: 0,
     marginBottom: -30,
+
   },
   textCategoria: {
     textAlign: 'center',
     color: 'black',
-    fontSize: 20,
-    marginBottom: -15,
+    fontSize: 16,
+    marginBottom: -10,
   },
   eliminarBtnText: {
     color: 'red',

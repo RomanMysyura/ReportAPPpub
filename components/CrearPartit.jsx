@@ -5,22 +5,19 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-
 export const CrearPartit = () => {
     const [nomPartida, setNomPartida] = useState('');
     const [categoria, setCategoria] = useState('Lliga Elit');
     const [date, setDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const nav = useNavigation(); // Obtén la función de navegación
-
-
 
     const handleDateChange = (event, selectedDate) => {
         if (selectedDate) {
             setDate(selectedDate);
         }
+        setShowDatePicker(false); // Cerrar el selector de fecha después de seleccionar una fecha
     };
-
-
 
     const guardarPartido = async () => {
         try {
@@ -45,8 +42,6 @@ export const CrearPartit = () => {
         }
     };
 
-
-    
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <TextInput
@@ -72,9 +67,14 @@ export const CrearPartit = () => {
                 <Picker.Item label="1, RFEF" value="1, RFEF" />
             </Picker>
 
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                <View style={styles.dateContainer}>
 
-            <View style={styles.dateContainer}>
-                <Text style={styles.label}>Data del partit:</Text>
+                    <Text>{date.toDateString()}</Text>
+                </View>
+            </TouchableOpacity>
+
+            {showDatePicker && (
                 <DateTimePicker
                     value={date}
                     mode="date"
@@ -82,8 +82,7 @@ export const CrearPartit = () => {
                     onChange={handleDateChange}
                     style={styles.datapicker}
                 />
-            </View>
-
+            )}
 
             <TouchableOpacity style={styles.btn} onPress={guardarPartido}>
                 <Text style={styles.btnText}>Crear partit</Text>
@@ -99,50 +98,45 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     input: {
-        fontSize: 35,
+        fontSize: 25,
         width: 300,
-        height: 40,
+
         borderBottomWidth: 1,
         marginBottom: 10,
     },
     label: {
-        fontSize: 30,
-        marginBottom: 10,
+        fontSize: 20,
+        marginBottom: 3,
     },
     picker: {
         width: 300,
-        height: 200,
+        backgroundColor: '#cfd2cd',
         marginBottom: 0,
-        marginTop: -20,
     },
     dateContainer: {
-        flexDirection: 'row',
+
         alignItems: 'center',
-        justifyContent: 'space-between',
+        backgroundColor: '#cfd2cd',
         width: 300,
-        margin: 5,
+        margin: 10,
+      
+        borderRadius: 3,
     },
     datapicker: {
         width: '50%',
-        marginLeft: -20,
-        margin: 0,
-        marginTop: -5,
+        fontSize: 25,
+
     },
     btn: {
         width: 300,
         padding: 10,
         borderRadius: 8,
-        margin: 10,
+        margin: 0,
         backgroundColor: '#0077b6',
     },
     btnText: {
         textAlign: 'center',
         color: 'white',
         fontSize: 20,
-    },
-    guardadoExitoso: {
-        color: 'green',
-        fontSize: 18,
-        marginBottom: 10,
     },
 });

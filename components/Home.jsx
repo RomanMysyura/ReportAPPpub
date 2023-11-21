@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
   },
   texttitol: {
     textAlign: 'center',
-    fontSize: 70,
-    marginTop: 70,
+    fontSize: 50,
+    marginTop: 0,
     color: '#0077b6',
   },
   containerButtons: {

@@ -264,7 +264,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 3,
     elevation: 3, 
-    margin: 20,
+    margin: 15,
+    width: 'auto',
+    
   },
   partidoContainer: {
     backgroundColor: 'white',
@@ -278,12 +280,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 3,
     elevation: 3, 
-    width: 330,
+    width: 320,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
   subtituloItemText: {
-    fontSize: 30,
+    fontSize: 20,
     color: 'white',
   },
   
@@ -334,11 +336,11 @@ const styles = StyleSheet.create({
     
   },
   titleText: {
-    fontSize: 40,
+    fontSize: 24,
     color: 'black',
   },
   configTitle: {
-    fontSize: 30,
+    fontSize: 20,
     color: 'white',
     
   },
@@ -352,9 +354,9 @@ const styles = StyleSheet.create({
     
   },
   subtituloText: {
-    fontSize: 28,
-    marginRight: 10,
-    marginLeft: 30,
+    fontSize: 20,
+    marginRight: 20,
+    marginLeft: 10,
   },
   modalContainer: {
     flex: 1,
@@ -363,18 +365,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   modalText: {
-    fontSize: 50,
+    fontSize: 30,
     color: 'black',
-    marginTop: 50,
+    
   },
   checkbox: {
-    marginLeft: 0,
-    height: 24,
-    width: 24,
+    
+    height: 21,
+    width: 21,
   },
   
   selectedSubtitulosItem: {
-    fontSize: 26,
+    fontSize: 19,
     marginLeft: 10,
     
   },
